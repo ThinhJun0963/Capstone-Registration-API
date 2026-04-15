@@ -26,15 +26,19 @@ namespace CapstoneProjectRegistration.Services.Service.Topicss
             try
             {
                 var topic = _mapper.Map<Topic>(topicRequest);
-                var topicExist = await _unitOfWork.Lecturers.GetAsync(x => x.Id == topic.CreatorId);
-                if (topicExist == null)
-                {
-                    await _unitOfWork.Topics.AddAsync(topic);
-                    await _unitOfWork.SaveChangesAsync();
 
+                var topicExist = await _unitOfWork.Topics
+                    .GetAsync(x => x.EnglishName == topic.EnglishName); // hoặc điều kiện unique của bạn
+
+                if (topicExist != null)
+                {
+                    return apiResponse.SetBadRequest("Topic already exists!!!");
                 }
 
-                return apiResponse.SetBadRequest("Topic already exist!!!");
+                await _unitOfWork.Topics.AddAsync(topic);
+                await _unitOfWork.SaveChangesAsync();
+
+                return apiResponse.SetOk("Create topic successfully!");
             }
             catch (Exception e)
             {

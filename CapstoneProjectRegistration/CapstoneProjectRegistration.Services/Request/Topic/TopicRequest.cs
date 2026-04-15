@@ -16,6 +16,10 @@ namespace CapstoneProjectRegistration.Services.Request.Topic
         public string VietnameseName { get; set; } = string.Empty;
 
         public int SemesterId { get; set; }
+        public int CreatorId { get; set; }
+
+        [StringLength(20)]
+        public string Status { get; set; } = string.Empty;
 
     }
 }
