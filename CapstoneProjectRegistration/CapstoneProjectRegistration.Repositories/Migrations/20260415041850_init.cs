@@ -6,13 +6,13 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CapstoneProjectRegistration.Repositories.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Admins",
+                name: "Admin",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -23,7 +23,7 @@ namespace CapstoneProjectRegistration.Repositories.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Admins", x => x.Id);
+                    table.PrimaryKey("PK_Admin", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -43,7 +43,7 @@ namespace CapstoneProjectRegistration.Repositories.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Semesters",
+                name: "Semester",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -55,11 +55,11 @@ namespace CapstoneProjectRegistration.Repositories.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Semesters", x => x.Id);
+                    table.PrimaryKey("PK_Semester", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Students",
+                name: "Student",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -71,11 +71,11 @@ namespace CapstoneProjectRegistration.Repositories.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Students", x => x.Id);
+                    table.PrimaryKey("PK_Student", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Topics",
+                name: "Topic",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -88,23 +88,23 @@ namespace CapstoneProjectRegistration.Repositories.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Topics", x => x.Id);
+                    table.PrimaryKey("PK_Topic", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Topics_Lecture_CreatorId",
+                        name: "FK_Topic_Lecture_CreatorId",
                         column: x => x.CreatorId,
                         principalTable: "Lecture",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Topics_Semesters_SemesterId",
+                        name: "FK_Topic_Semester_SemesterId",
                         column: x => x.SemesterId,
-                        principalTable: "Semesters",
+                        principalTable: "Semester",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "TopicReviews",
+                name: "TopicReview",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -117,62 +117,62 @@ namespace CapstoneProjectRegistration.Repositories.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TopicReviews", x => x.Id);
+                    table.PrimaryKey("PK_TopicReview", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TopicReviews_Lecture_ReviewerId",
+                        name: "FK_TopicReview_Lecture_ReviewerId",
                         column: x => x.ReviewerId,
                         principalTable: "Lecture",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_TopicReviews_Topics_TopicId",
+                        name: "FK_TopicReview_Topic_TopicId",
                         column: x => x.TopicId,
-                        principalTable: "Topics",
+                        principalTable: "Topic",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_TopicReviews_ReviewerId",
-                table: "TopicReviews",
-                column: "ReviewerId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TopicReviews_TopicId",
-                table: "TopicReviews",
-                column: "TopicId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Topics_CreatorId",
-                table: "Topics",
+                name: "IX_Topic_CreatorId",
+                table: "Topic",
                 column: "CreatorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Topics_SemesterId",
-                table: "Topics",
+                name: "IX_Topic_SemesterId",
+                table: "Topic",
                 column: "SemesterId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TopicReview_ReviewerId",
+                table: "TopicReview",
+                column: "ReviewerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TopicReview_TopicId",
+                table: "TopicReview",
+                column: "TopicId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Admins");
+                name: "Admin");
 
             migrationBuilder.DropTable(
-                name: "Students");
+                name: "Student");
 
             migrationBuilder.DropTable(
-                name: "TopicReviews");
+                name: "TopicReview");
 
             migrationBuilder.DropTable(
-                name: "Topics");
+                name: "Topic");
 
             migrationBuilder.DropTable(
                 name: "Lecture");
 
             migrationBuilder.DropTable(
-                name: "Semesters");
+                name: "Semester");
         }
     }
 }

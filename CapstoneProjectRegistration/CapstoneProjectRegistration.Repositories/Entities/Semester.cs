@@ -1,7 +1,9 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CapstoneProjectRegistration.Repositories.Entities;
 
+[Table("Semester")]
 public class Semester
 {
     [Key]

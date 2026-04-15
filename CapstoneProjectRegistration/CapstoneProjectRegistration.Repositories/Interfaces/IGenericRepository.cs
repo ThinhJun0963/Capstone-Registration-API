@@ -1,9 +1,16 @@
+using Microsoft.EntityFrameworkCore.Query;
+using System.Linq.Expressions;
+
 namespace CapstoneProjectRegistration.Repositories.Interfaces;
 
 public interface IGenericRepository<T> where T : class
 {
+    Task<T> GetAsync(Expression<Func<T, bool>> filter);
     Task<IReadOnlyList<T>> GetAllAsync();
+    Task<List<T>> GetAllAsync(System.Linq.Expressions.Expression<Func<T, bool>>? filter);
+    Task<T> GetAsync(System.Linq.Expressions.Expression<Func<T, bool>> filter, Func<IQueryable<T>, IIncludableQueryable<T, object>>? include);
 
+    Task RemoveByIdAsync(object id);
     Task<T?> GetByIdAsync(int id);
 
     Task AddAsync(T entity);

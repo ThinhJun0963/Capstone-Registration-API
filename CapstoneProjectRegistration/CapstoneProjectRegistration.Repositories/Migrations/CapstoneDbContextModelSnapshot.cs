@@ -47,7 +47,7 @@ namespace CapstoneProjectRegistration.Repositories.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Admins");
+                    b.ToTable("Admin");
                 });
 
             modelBuilder.Entity("CapstoneProjectRegistration.Repositories.Entities.Lecturer", b =>
@@ -109,7 +109,7 @@ namespace CapstoneProjectRegistration.Repositories.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Semesters");
+                    b.ToTable("Semester");
                 });
 
             modelBuilder.Entity("CapstoneProjectRegistration.Repositories.Entities.Student", b =>
@@ -142,7 +142,7 @@ namespace CapstoneProjectRegistration.Repositories.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Students");
+                    b.ToTable("Student");
                 });
 
             modelBuilder.Entity("CapstoneProjectRegistration.Repositories.Entities.Topic", b =>
@@ -180,7 +180,7 @@ namespace CapstoneProjectRegistration.Repositories.Migrations
 
                     b.HasIndex("SemesterId");
 
-                    b.ToTable("Topics");
+                    b.ToTable("Topic");
                 });
 
             modelBuilder.Entity("CapstoneProjectRegistration.Repositories.Entities.TopicReview", b =>
@@ -215,7 +215,7 @@ namespace CapstoneProjectRegistration.Repositories.Migrations
 
                     b.HasIndex("TopicId");
 
-                    b.ToTable("TopicReviews");
+                    b.ToTable("TopicReview");
                 });
 
             modelBuilder.Entity("CapstoneProjectRegistration.Repositories.Entities.Topic", b =>
