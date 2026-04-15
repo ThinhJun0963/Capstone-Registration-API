@@ -1,0 +1,6 @@
+@CapstoneProjectRegistration.API_HostAddress = http://localhost:5047
+
+GET {{CapstoneProjectRegistration.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
