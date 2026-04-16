@@ -1,0 +1,148 @@
+@host = https://localhost:7259
+
+### ========================================
+### A. QUICK CHECK SEEDED DATA
+### ========================================
+
+### 1) Active registration period (from seed)
+GET {{host}}/api/registration-periods/active
+
+### 2) List all topics (seed includes Approved + Rejected case)
+GET {{host}}/api/topics
+
+### 3) Get approved seeded topic details
+GET {{host}}/api/topics/1001
+
+### 4) Get rejected seeded topic review summary
+GET {{host}}/api/topics/1002/review-summary
+
+### ========================================
+### B. DEMO FLOW 1 - HAPPY PATH (APPROVE -> PUBLIC)
+### ========================================
+
+### 5) Create topic (new pending topic)
+POST {{host}}/api/topics
+Content-Type: application/json
+
+{
+  "englishName": "Capstone Registration Portal",
+  "vietnameseName": "Cong thong tin dang ky de tai",
+  "topicCode": "SU26SE010",
+  "description": "Build a three tier RESTful API system for topic registration and review assignment.",
+  "semesterId": 1,
+  "registrationPeriodId": 1,
+  "creatorId": 1
+}
+
+### 6) Assign two reviewers for topic 1003
+POST {{host}}/api/topics/1003/assign-reviewers
+Content-Type: application/json
+
+{
+  "reviewer1Id": 2,
+  "reviewer2Id": 3
+}
+
+### 7) Reviewer 1 approves
+POST {{host}}/api/topics/1003/reviews
+Content-Type: application/json
+
+{
+  "reviewerId": 2,
+  "decision": "Approved",
+  "comment": "Good scope and feasible timeline."
+}
+
+### 8) Reviewer 2 approves
+POST {{host}}/api/topics/1003/reviews
+Content-Type: application/json
+
+{
+  "reviewerId": 3,
+  "decision": "Approved",
+  "comment": "Approved with minor wording improvements."
+}
+
+### 9) Review summary (should be Approved)
+GET {{host}}/api/topics/1003/review-summary
+
+### 10) Publish topic (should succeed)
+POST {{host}}/api/topics/1003/publish
+
+### ========================================
+### C. DEMO FLOW 2 - REJECT PATH
+### ========================================
+
+### 11) Create another topic
+POST {{host}}/api/topics
+Content-Type: application/json
+
+{
+  "englishName": "Student Topic Matching Assistant",
+  "vietnameseName": "Tro ly doi soat de tai cho sinh vien",
+  "topicCode": "SU26SE011",
+  "description": "Support students in searching and comparing capstone topics.",
+  "semesterId": 1,
+  "registrationPeriodId": 1,
+  "creatorId": 4
+}
+
+### 12) Assign reviewers for topic 1004
+POST {{host}}/api/topics/1004/assign-reviewers
+Content-Type: application/json
+
+{
+  "reviewer1Id": 2,
+  "reviewer2Id": 3
+}
+
+### 13) Reviewer 1 rejects
+POST {{host}}/api/topics/1004/reviews
+Content-Type: application/json
+
+{
+  "reviewerId": 2,
+  "decision": "Rejected",
+  "comment": "Problem statement is not clear enough."
+}
+
+### 14) Reviewer 2 approves
+POST {{host}}/api/topics/1004/reviews
+Content-Type: application/json
+
+{
+  "reviewerId": 3,
+  "decision": "Approved",
+  "comment": "Can continue with stronger scope definition."
+}
+
+### 15) Summary (should be Rejected)
+GET {{host}}/api/topics/1004/review-summary
+
+### 16) Publish rejected topic (should fail)
+POST {{host}}/api/topics/1004/publish
+
+### ========================================
+### D. AUXILIARY APIS
+### ========================================
+
+### 17) Duplicate check
+POST {{host}}/api/topics/duplicate-check
+Content-Type: application/json
+
+{
+  "englishName": "BoneVisQA Interactive Learning",
+  "vietnameseName": "BoneVisQA Hoi Dap Truc Quan",
+  "description": "Interactive VQA and RAG based learning system for bone diseases."
+}
+
+### 18) Create registration period
+POST {{host}}/api/registration-periods
+Content-Type: application/json
+
+{
+  "name": "Fall 2026",
+  "startDate": "2026-09-01T00:00:00",
+  "endDate": "2026-09-30T23:59:59",
+  "semesterId": 1
+}

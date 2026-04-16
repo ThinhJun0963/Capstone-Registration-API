@@ -1,18 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace CapstoneProjectRegistration.Services.Request.Topic;
 
-public class TopicUpdateRequest
+public class TopicDuplicateCheckRequest
 {
-    [StringLength(255)]
+    [Required]
     public string EnglishName { get; set; } = string.Empty;
 
-    [StringLength(255)]
+    [Required]
     public string VietnameseName { get; set; } = string.Empty;
 
-    [StringLength(4000)]
+    [Required]
     public string Description { get; set; } = string.Empty;
-
-    public int SemesterId { get; set; }
-    public int RegistrationPeriodId { get; set; }
 }

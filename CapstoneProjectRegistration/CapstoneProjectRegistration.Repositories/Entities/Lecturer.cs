@@ -19,6 +19,12 @@ public class Lecturer
     public string Phone { get; set; } = string.Empty;
 
     [StringLength(20)]
+    public string Title { get; set; } = "Mr";
+
+    [StringLength(255)]
+    public string Specialization { get; set; } = string.Empty;
+
+    [StringLength(20)]
     public string Status { get; set; } = string.Empty;
 
     public ICollection<Topic> Topics { get; set; } = new List<Topic>();

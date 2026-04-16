@@ -1,24 +1,25 @@
 ﻿using AutoMapper;
 using CapstoneProjectRegistration.Repositories.Entities;
+using CapstoneProjectRegistration.Services.Request.RegistrationPeriod;
 using CapstoneProjectRegistration.Services.Request.Topic;
+using CapstoneProjectRegistration.Services.Respond.RegistrationPeriod;
 using CapstoneProjectRegistration.Services.Respond.Topics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
+namespace CapstoneProjectRegistration.Services.MyMapper;
 
-namespace CapstoneProjectRegistration.Services.MyMapper
+public class MapperConfigurationsProfile : Profile
 {
-    public class MapperConfigurationsProfile : Profile
+    public MapperConfigurationsProfile()
     {
-        public MapperConfigurationsProfile()
-        {
-            CreateMap<TopicRequest, Topic>();
-            CreateMap<Topic, TopicRespond>();
-            CreateMap<TopicUpdateRequest, Topic>();
-        }
+        CreateMap<TopicCreateRequest, Topic>()
+            .ForMember(dest => dest.Status, opt => opt.MapFrom(_ => "Pending"))
+            .ForMember(dest => dest.ReviewStatus, opt => opt.MapFrom(_ => "Pending"))
+            .ForMember(dest => dest.PublicStatus, opt => opt.MapFrom(_ => "Private"));
+        CreateMap<Topic, TopicRespond>();
+        CreateMap<TopicUpdateRequest, Topic>();
 
+        CreateMap<CreateRegistrationPeriodRequest, RegistrationPeriod>()
+            .ForMember(dest => dest.Status, opt => opt.MapFrom(_ => "Active"));
+        CreateMap<RegistrationPeriod, RegistrationPeriodRespond>();
     }
 }

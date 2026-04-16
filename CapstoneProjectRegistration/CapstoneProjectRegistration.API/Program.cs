@@ -4,6 +4,7 @@ using CapstoneProjectRegistration.Repositories.Implements;
 using CapstoneProjectRegistration.Repositories.Interfaces;
 using CapstoneProjectRegistration.Services.Interface;
 using CapstoneProjectRegistration.Services.MyMapper;
+using CapstoneProjectRegistration.Services.Service.RegistrationPeriods;
 using CapstoneProjectRegistration.Services.Service.Topicss;
 using Microsoft.EntityFrameworkCore;
 
@@ -34,6 +35,7 @@ namespace CapstoneProjectRegistration.API
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
             builder.Services.AddScoped<ITopicService, TopicService>();
+            builder.Services.AddScoped<IRegistrationPeriodService, RegistrationPeriodService>();
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();

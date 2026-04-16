@@ -11,10 +11,10 @@ namespace CapstoneProjectRegistration.Services.Respond
     {
         public HttpStatusCode StatusCode { get; private set; }
         public bool IsSuccess { get; private set; }
-        public string ErrorMessage { get; private set; }
-        public object Result { get; private set; }
+        public string? ErrorMessage { get; private set; }
+        public object? Result { get; private set; }
 
-        public ApiResponse SetOk(object result = null)
+        public ApiResponse SetOk(object? result = null)
         {
             IsSuccess = true;
             StatusCode = HttpStatusCode.OK;
@@ -22,7 +22,7 @@ namespace CapstoneProjectRegistration.Services.Respond
             return this;
         }
 
-        public ApiResponse SetNotFound(object result = null, string message = null)
+        public ApiResponse SetNotFound(object? result = null, string? message = null)
         {
             IsSuccess = false;
             StatusCode = HttpStatusCode.NotFound;
@@ -34,7 +34,7 @@ namespace CapstoneProjectRegistration.Services.Respond
             return this;
         }
 
-        public ApiResponse SetBadRequest(object result = null, string message = null)
+        public ApiResponse SetBadRequest(object? result = null, string? message = null)
         {
             IsSuccess = false;
             StatusCode = HttpStatusCode.BadRequest;
@@ -46,7 +46,7 @@ namespace CapstoneProjectRegistration.Services.Respond
             return this;
         }
 
-        public ApiResponse SetApiResponse(HttpStatusCode statusCode, bool isSuccess, string message = null, object result = null)
+        public ApiResponse SetApiResponse(HttpStatusCode statusCode, bool isSuccess, string? message = null, object? result = null)
         {
             IsSuccess = isSuccess;
             StatusCode = statusCode;

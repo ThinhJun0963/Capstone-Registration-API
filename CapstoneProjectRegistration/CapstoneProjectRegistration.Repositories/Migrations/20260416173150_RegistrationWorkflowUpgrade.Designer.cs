@@ -4,6 +4,7 @@ using CapstoneProjectRegistration.Repositories.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CapstoneProjectRegistration.Repositories.Migrations
 {
     [DbContext(typeof(CapstoneDbContext))]
-    partial class CapstoneDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260416173150_RegistrationWorkflowUpgrade")]
+    partial class RegistrationWorkflowUpgrade
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,15 +51,6 @@ namespace CapstoneProjectRegistration.Repositories.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Admin");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Email = "admin@gmail.com",
-                            Name = "System Admin",
-                            Status = "Active"
-                        });
                 });
 
             modelBuilder.Entity("CapstoneProjectRegistration.Repositories.Entities.Lecturer", b =>
@@ -105,8 +99,8 @@ namespace CapstoneProjectRegistration.Repositories.Migrations
                         new
                         {
                             Id = 1,
-                            Email = "lecturer1@gmail.com",
-                            Name = "Lecturer 1",
+                            Email = "lecturer.a@example.com",
+                            Name = "Nguyen Van A",
                             Phone = "0900000001",
                             Specialization = "Software Engineering",
                             Status = "Active",
@@ -115,8 +109,8 @@ namespace CapstoneProjectRegistration.Repositories.Migrations
                         new
                         {
                             Id = 2,
-                            Email = "lecturer2@gmail.com",
-                            Name = "Lecturer 2",
+                            Email = "lecturer.b@example.com",
+                            Name = "Tran Thi B",
                             Phone = "0900000002",
                             Specialization = "Information Systems",
                             Status = "Active",
@@ -125,22 +119,12 @@ namespace CapstoneProjectRegistration.Repositories.Migrations
                         new
                         {
                             Id = 3,
-                            Email = "lecturer3@gmail.com",
-                            Name = "Lecturer 3",
+                            Email = "lecturer.c@example.com",
+                            Name = "Le Van C",
                             Phone = "0900000003",
                             Specialization = "AI",
                             Status = "Active",
                             Title = "Mr"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Email = "lecturer4@gmail.com",
-                            Name = "Lecturer 4",
-                            Phone = "0900000004",
-                            Specialization = "Data Science",
-                            Status = "Active",
-                            Title = "Prof"
                         });
                 });
 
@@ -181,29 +165,11 @@ namespace CapstoneProjectRegistration.Repositories.Migrations
                         new
                         {
                             Id = 1,
-                            EndDate = new DateTime(2026, 4, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Spring 2026 - Week 1",
+                            EndDate = new DateTime(2026, 4, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Spring 2026",
                             SemesterId = 1,
                             StartDate = new DateTime(2026, 4, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "Active"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            EndDate = new DateTime(2026, 4, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Spring 2026 - Week 2",
-                            SemesterId = 1,
-                            StartDate = new DateTime(2026, 4, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Status = "Inactive"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            EndDate = new DateTime(2026, 4, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Spring 2026 - Week 3",
-                            SemesterId = 1,
-                            StartDate = new DateTime(2026, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Status = "Inactive"
                         });
                 });
 
@@ -287,28 +253,6 @@ namespace CapstoneProjectRegistration.Repositories.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Student");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Email = "thinhpdqse171589@fpt.edu.vn",
-                            GroupRole = "Leader",
-                            Name = "Pham Dinh Quoc Thinh",
-                            Phone = "0842918005",
-                            Status = "Active",
-                            StudentCode = "SE171589"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Email = "namnnse182539@fpt.edu.vn",
-                            GroupRole = "Member",
-                            Name = "Nguyen Nhat Nam",
-                            Phone = "0704656071",
-                            Status = "Active",
-                            StudentCode = "SE182539"
-                        });
                 });
 
             modelBuilder.Entity("CapstoneProjectRegistration.Repositories.Entities.Topic", b =>
@@ -378,38 +322,6 @@ namespace CapstoneProjectRegistration.Repositories.Migrations
                         .IsUnique();
 
                     b.ToTable("Topic");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1001,
-                            CreatedAt = new DateTime(2026, 4, 3, 8, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatorId = 1,
-                            Description = "Learning system for bone diseases.",
-                            EnglishName = "BoneVisQA Interactive Learning",
-                            PublicStatus = "Public",
-                            RegistrationPeriodId = 1,
-                            ReviewStatus = "Approved",
-                            SemesterId = 1,
-                            Status = "Approved",
-                            TopicCode = "SU26SE0011",
-                            VietnameseName = "BoneVisQA Hỏi Đáp Trực Quan"
-                        },
-                        new
-                        {
-                            Id = 1002,
-                            CreatedAt = new DateTime(2026, 4, 4, 9, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatorId = 4,
-                            Description = "Detect duplicated project ideas via fuzzy matching and semantic scoring.",
-                            EnglishName = "Capstone Topic Similarity Scanner",
-                            PublicStatus = "Private",
-                            RegistrationPeriodId = 1,
-                            ReviewStatus = "Rejected",
-                            SemesterId = 1,
-                            Status = "Rejected",
-                            TopicCode = "SU26SE002",
-                            VietnameseName = "Hệ thống số khớp đề tài do an"
-                        });
                 });
 
             modelBuilder.Entity("CapstoneProjectRegistration.Repositories.Entities.TopicReview", b =>
@@ -449,48 +361,6 @@ namespace CapstoneProjectRegistration.Repositories.Migrations
                         .IsUnique();
 
                     b.ToTable("TopicReview");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 5001,
-                            Comment = "Clear scope.",
-                            Decision = "Approved",
-                            IsFinalized = true,
-                            ReviewDate = new DateTime(2026, 4, 6, 10, 0, 0, 0, DateTimeKind.Unspecified),
-                            ReviewerId = 2,
-                            TopicId = 1001
-                        },
-                        new
-                        {
-                            Id = 5002,
-                            Comment = "Good practical value.",
-                            Decision = "Approved",
-                            IsFinalized = true,
-                            ReviewDate = new DateTime(2026, 4, 6, 11, 0, 0, 0, DateTimeKind.Unspecified),
-                            ReviewerId = 3,
-                            TopicId = 1001
-                        },
-                        new
-                        {
-                            Id = 5003,
-                            Comment = "Topic overlaps too much with existing works.",
-                            Decision = "Rejected",
-                            IsFinalized = true,
-                            ReviewDate = new DateTime(2026, 4, 7, 10, 0, 0, 0, DateTimeKind.Unspecified),
-                            ReviewerId = 2,
-                            TopicId = 1002
-                        },
-                        new
-                        {
-                            Id = 5004,
-                            Comment = "Acceptable but revise objectives.",
-                            Decision = "Approved",
-                            IsFinalized = true,
-                            ReviewDate = new DateTime(2026, 4, 7, 11, 0, 0, 0, DateTimeKind.Unspecified),
-                            ReviewerId = 3,
-                            TopicId = 1002
-                        });
                 });
 
             modelBuilder.Entity("CapstoneProjectRegistration.Repositories.Entities.RegistrationPeriod", b =>

@@ -12,6 +12,8 @@ public interface IUnitOfWork : IDisposable
 
     IGenericRepository<Semester> Semesters { get; }
 
+    IGenericRepository<RegistrationPeriod> RegistrationPeriods { get; }
+
     IGenericRepository<Topic> Topics { get; }
 
     IGenericRepository<TopicReview> TopicReviews { get; }

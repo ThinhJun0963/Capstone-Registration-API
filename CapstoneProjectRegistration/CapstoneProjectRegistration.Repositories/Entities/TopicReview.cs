@@ -23,4 +23,6 @@ public class TopicReview
     public string Comment { get; set; } = string.Empty;
 
     public DateTime ReviewDate { get; set; }
+
+    public bool IsFinalized { get; set; }
 }
