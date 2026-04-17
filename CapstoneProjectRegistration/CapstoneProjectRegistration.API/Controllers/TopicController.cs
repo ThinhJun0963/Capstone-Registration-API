@@ -1,6 +1,5 @@
 using CapstoneProjectRegistration.Services.Interface;
 using CapstoneProjectRegistration.Services.Request.Topic;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CapstoneProjectRegistration.API.Controllers
@@ -86,9 +85,10 @@ namespace CapstoneProjectRegistration.API.Controllers
         }
 
         [HttpPost("extract-from-file")]
-        public async Task<IActionResult> ExtractFromFile([FromForm] IFormFile file)
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> ExtractFromFile([FromForm] ExtractTopicFromFileRequest request)
         {
-            var response = await _topicService.ExtractTopicFromFileAsync(file);
+            var response = await _topicService.ExtractTopicFromFileAsync(request.File);
             return response.IsSuccess ? Ok(response) : BadRequest(response);
         }
     }
