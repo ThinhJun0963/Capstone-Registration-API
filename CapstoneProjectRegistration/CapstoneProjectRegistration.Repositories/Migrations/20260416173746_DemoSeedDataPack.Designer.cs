@@ -4,6 +4,7 @@ using CapstoneProjectRegistration.Repositories.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CapstoneProjectRegistration.Repositories.Migrations
 {
     [DbContext(typeof(CapstoneDbContext))]
-    partial class CapstoneDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260416173746_DemoSeedDataPack")]
+    partial class DemoSeedDataPack
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,7 +56,7 @@ namespace CapstoneProjectRegistration.Repositories.Migrations
                         new
                         {
                             Id = 1,
-                            Email = "admin@gmail.com",
+                            Email = "admin@capstone.local",
                             Name = "System Admin",
                             Status = "Active"
                         });
@@ -105,8 +108,8 @@ namespace CapstoneProjectRegistration.Repositories.Migrations
                         new
                         {
                             Id = 1,
-                            Email = "lecturer1@gmail.com",
-                            Name = "Lecturer 1",
+                            Email = "lecturer.a@example.com",
+                            Name = "Nguyen Van A",
                             Phone = "0900000001",
                             Specialization = "Software Engineering",
                             Status = "Active",
@@ -115,8 +118,8 @@ namespace CapstoneProjectRegistration.Repositories.Migrations
                         new
                         {
                             Id = 2,
-                            Email = "lecturer2@gmail.com",
-                            Name = "Lecturer 2",
+                            Email = "lecturer.b@example.com",
+                            Name = "Tran Thi B",
                             Phone = "0900000002",
                             Specialization = "Information Systems",
                             Status = "Active",
@@ -125,8 +128,8 @@ namespace CapstoneProjectRegistration.Repositories.Migrations
                         new
                         {
                             Id = 3,
-                            Email = "lecturer3@gmail.com",
-                            Name = "Lecturer 3",
+                            Email = "lecturer.c@example.com",
+                            Name = "Le Van C",
                             Phone = "0900000003",
                             Specialization = "AI",
                             Status = "Active",
@@ -135,8 +138,8 @@ namespace CapstoneProjectRegistration.Repositories.Migrations
                         new
                         {
                             Id = 4,
-                            Email = "lecturer4@gmail.com",
-                            Name = "Lecturer 4",
+                            Email = "lecturer.d@example.com",
+                            Name = "Pham Thi D",
                             Phone = "0900000004",
                             Specialization = "Data Science",
                             Status = "Active",
@@ -181,8 +184,8 @@ namespace CapstoneProjectRegistration.Repositories.Migrations
                         new
                         {
                             Id = 1,
-                            EndDate = new DateTime(2026, 4, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Spring 2026 - Week 1",
+                            EndDate = new DateTime(2026, 4, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Spring 2026",
                             SemesterId = 1,
                             StartDate = new DateTime(2026, 4, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "Active"
@@ -190,19 +193,10 @@ namespace CapstoneProjectRegistration.Repositories.Migrations
                         new
                         {
                             Id = 2,
-                            EndDate = new DateTime(2026, 4, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Spring 2026 - Week 2",
+                            EndDate = new DateTime(2026, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Summer 2026",
                             SemesterId = 1,
-                            StartDate = new DateTime(2026, 4, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Status = "Inactive"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            EndDate = new DateTime(2026, 4, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Spring 2026 - Week 3",
-                            SemesterId = 1,
-                            StartDate = new DateTime(2026, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartDate = new DateTime(2026, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "Inactive"
                         });
                 });
@@ -385,15 +379,15 @@ namespace CapstoneProjectRegistration.Repositories.Migrations
                             Id = 1001,
                             CreatedAt = new DateTime(2026, 4, 3, 8, 0, 0, 0, DateTimeKind.Unspecified),
                             CreatorId = 1,
-                            Description = "Learning system for bone diseases.",
+                            Description = "Interactive VQA and RAG based learning system for bone diseases.",
                             EnglishName = "BoneVisQA Interactive Learning",
                             PublicStatus = "Public",
                             RegistrationPeriodId = 1,
                             ReviewStatus = "Approved",
                             SemesterId = 1,
                             Status = "Approved",
-                            TopicCode = "SU26SE0011",
-                            VietnameseName = "BoneVisQA Hỏi Đáp Trực Quan"
+                            TopicCode = "SP26SE110",
+                            VietnameseName = "BoneVisQA Hoi Dap Truc Quan"
                         },
                         new
                         {
@@ -408,7 +402,7 @@ namespace CapstoneProjectRegistration.Repositories.Migrations
                             SemesterId = 1,
                             Status = "Rejected",
                             TopicCode = "SU26SE002",
-                            VietnameseName = "Hệ thống số khớp đề tài do an"
+                            VietnameseName = "He thong so khop de tai do an"
                         });
                 });
 

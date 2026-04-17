@@ -1,7 +1,9 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CapstoneProjectRegistration.Repositories.Entities;
 
+[Table("TopicReview")]
 public class TopicReview
 {
     [Key]
@@ -21,4 +23,6 @@ public class TopicReview
     public string Comment { get; set; } = string.Empty;
 
     public DateTime ReviewDate { get; set; }
+
+    public bool IsFinalized { get; set; }
 }

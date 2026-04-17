@@ -3,8 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CapstoneProjectRegistration.Repositories.Entities;
 
-[Table("Semester")]
-public class Semester
+[Table("RegistrationPeriod")]
+public class RegistrationPeriod
 {
     [Key]
     public int Id { get; set; }
@@ -17,9 +17,11 @@ public class Semester
     public DateTime EndDate { get; set; }
 
     [StringLength(20)]
-    public string Status { get; set; } = string.Empty;
+    public string Status { get; set; } = "Inactive";
+
+    public int SemesterId { get; set; }
+
+    public Semester Semester { get; set; } = null!;
 
     public ICollection<Topic> Topics { get; set; } = new List<Topic>();
-
-    public ICollection<RegistrationPeriod> RegistrationPeriods { get; set; } = new List<RegistrationPeriod>();
 }

@@ -11,6 +11,7 @@ public class UnitOfWork : IUnitOfWork
     private IGenericRepository<Lecturer>? _lecturers;
     private IGenericRepository<Student>? _students;
     private IGenericRepository<Semester>? _semesters;
+    private IGenericRepository<RegistrationPeriod>? _registrationPeriods;
     private IGenericRepository<Topic>? _topics;
     private IGenericRepository<TopicReview>? _topicReviews;
 
@@ -30,6 +31,9 @@ public class UnitOfWork : IUnitOfWork
 
     public IGenericRepository<Semester> Semesters =>
         _semesters ??= new GenericRepository<Semester>(_context);
+
+    public IGenericRepository<RegistrationPeriod> RegistrationPeriods =>
+        _registrationPeriods ??= new GenericRepository<RegistrationPeriod>(_context);
 
     public IGenericRepository<Topic> Topics =>
         _topics ??= new GenericRepository<Topic>(_context);
