@@ -1,9 +1,11 @@
 using CapstoneProjectRegistration.Repositories.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace CapstoneProjectRegistration.Repositories.Data;
 
-public class CapstoneDbContext : DbContext
+public class CapstoneDbContext : IdentityDbContext<ApplicationUser, IdentityRole<int>, int>
 {
     public CapstoneDbContext(DbContextOptions<CapstoneDbContext> options)
         : base(options)
@@ -27,6 +29,34 @@ public class CapstoneDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<Admin>(entity =>
+        {
+            entity.HasOne(a => a.ApplicationUser)
+                .WithMany()
+                .HasForeignKey(a => a.ApplicationUserId)
+                .OnDelete(DeleteBehavior.SetNull);
+        });
+
+        modelBuilder.Entity<Lecturer>(entity =>
+        {
+            entity.HasIndex(l => l.ApplicationUserId).IsUnique().HasFilter("[ApplicationUserId] IS NOT NULL");
+
+            entity.HasOne(l => l.ApplicationUser)
+                .WithMany()
+                .HasForeignKey(l => l.ApplicationUserId)
+                .OnDelete(DeleteBehavior.SetNull);
+        });
+
+        modelBuilder.Entity<Student>(entity =>
+        {
+            entity.HasIndex(s => s.ApplicationUserId).IsUnique().HasFilter("[ApplicationUserId] IS NOT NULL");
+
+            entity.HasOne(s => s.ApplicationUser)
+                .WithMany()
+                .HasForeignKey(s => s.ApplicationUserId)
+                .OnDelete(DeleteBehavior.SetNull);
+        });
 
         modelBuilder.Entity<Topic>(entity =>
         {
@@ -106,6 +136,24 @@ public class CapstoneDbContext : DbContext
                 Name = "Spring 2026 - Week 3",
                 StartDate = new DateTime(2026, 4, 15),
                 EndDate = new DateTime(2026, 4, 21),
+                Status = "Inactive",
+                SemesterId = 1
+            },
+            new RegistrationPeriod
+            {
+                Id = 4,
+                Name = "Spring 2026 - Week 4",
+                StartDate = new DateTime(2026, 4, 22),
+                EndDate = new DateTime(2026, 4, 28),
+                Status = "Inactive",
+                SemesterId = 1
+            },
+            new RegistrationPeriod
+            {
+                Id = 5,
+                Name = "Spring 2026 - Final intake",
+                StartDate = new DateTime(2026, 4, 29),
+                EndDate = new DateTime(2026, 5, 5),
                 Status = "Inactive",
                 SemesterId = 1
             });
@@ -213,6 +261,51 @@ public class CapstoneDbContext : DbContext
                 ReviewStatus = "Rejected",
                 PublicStatus = "Private",
                 CreatedAt = new DateTime(2026, 4, 4, 9, 0, 0)
+            },
+            new Topic
+            {
+                Id = 1003,
+                EnglishName = "Campus Room Booking Assistant",
+                VietnameseName = "Trợ lý đặt phòng học trong campus",
+                TopicCode = "SU26SE003",
+                Description = "Mobile-first booking flow with conflict detection and notifications.",
+                SemesterId = 1,
+                RegistrationPeriodId = 2,
+                CreatorId = 2,
+                Status = "Pending",
+                ReviewStatus = "Pending",
+                PublicStatus = "Private",
+                CreatedAt = new DateTime(2026, 4, 10, 10, 0, 0)
+            },
+            new Topic
+            {
+                Id = 1004,
+                EnglishName = "Graduation Checklist Tracker",
+                VietnameseName = "Theo dõi checklist tốt nghiệp",
+                TopicCode = "SU26SE004",
+                Description = "Dashboard for students and staff to track graduation requirements.",
+                SemesterId = 1,
+                RegistrationPeriodId = 2,
+                CreatorId = 3,
+                Status = "Approved",
+                ReviewStatus = "Approved",
+                PublicStatus = "Public",
+                CreatedAt = new DateTime(2026, 4, 11, 14, 30, 0)
+            },
+            new Topic
+            {
+                Id = 1005,
+                EnglishName = "Peer Code Review Metrics",
+                VietnameseName = "Đo lường peer code review",
+                TopicCode = "SU26SE005",
+                Description = "Collect Git-based metrics and visualize review quality over sprints.",
+                SemesterId = 1,
+                RegistrationPeriodId = 3,
+                CreatorId = 1,
+                Status = "Draft",
+                ReviewStatus = "Pending",
+                PublicStatus = "Private",
+                CreatedAt = new DateTime(2026, 4, 16, 9, 15, 0)
             });
 
         modelBuilder.Entity<TopicReview>().HasData(

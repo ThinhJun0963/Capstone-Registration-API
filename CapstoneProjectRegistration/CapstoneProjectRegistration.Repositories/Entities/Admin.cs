@@ -17,4 +17,8 @@ public class Admin
 
     [StringLength(20)]
     public string Status { get; set; } = string.Empty;
+
+    public int? ApplicationUserId { get; set; }
+
+    public ApplicationUser? ApplicationUser { get; set; }
 }

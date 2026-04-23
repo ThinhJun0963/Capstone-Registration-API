@@ -1,3 +1,4 @@
+using CapstoneProjectRegistration.API.Security;
 using CapstoneProjectRegistration.Services.Interface;
 using CapstoneProjectRegistration.Services.Request.RegistrationPeriod;
 using Microsoft.AspNetCore.Authorization;
@@ -6,7 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace CapstoneProjectRegistration.API.Controllers;
 
 [ApiController]
-[Route("api/registration-periods")]
+[Tags("03 · Registration periods")]
+[Route("api/v1/registration-periods")]
 public class RegistrationPeriodsController : ControllerBase
 {
     private readonly IRegistrationPeriodService _registrationPeriodService;
@@ -17,8 +19,8 @@ public class RegistrationPeriodsController : ControllerBase
     }
 
     [HttpPost]
-    [Authorize]
-    public async Task<IActionResult> Create([FromBody] CreateRegistrationPeriodRequest request)
+    [Authorize(Policy = AuthPolicies.RegistrationPeriodsManage)]
+    public async Task<IActionResult> Post([FromBody] CreateRegistrationPeriodRequest request)
     {
         var response = await _registrationPeriodService.CreateAsync(request);
         return response.IsSuccess ? Ok(response) : BadRequest(response);

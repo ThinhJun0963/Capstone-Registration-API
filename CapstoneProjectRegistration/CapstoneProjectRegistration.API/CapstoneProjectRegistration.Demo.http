@@ -1,16 +1,38 @@
 @host = https://localhost:7259
-@token = <paste_jwt_from_login_response>
+@token = <paste_jwt_from_token_response>
 
 ### ========================================
-### 0) Login (demo: admin@fpt.edu.vn / Admin@123) — use token in Authorization for protected routes
+### 0) Issue JWT — dev seed accounts (password DevPass@1 for all)
+###    Admin | Lecturer | Student
 ### ========================================
 
-POST {{host}}/api/auth/login
+# @name adminToken
+POST {{host}}/api/v1/authentication/token
 Content-Type: application/json
 
 {
-  "email": "admin@fpt.edu.vn",
-  "password": "Admin@123"
+  "email": "admin@gmail.com",
+  "password": "DevPass@1"
+}
+
+###
+# @name lecturerToken
+POST {{host}}/api/v1/authentication/token
+Content-Type: application/json
+
+{
+  "email": "lecturer1@gmail.com",
+  "password": "DevPass@1"
+}
+
+###
+# @name studentToken
+POST {{host}}/api/v1/authentication/token
+Content-Type: application/json
+
+{
+  "email": "thinhpdqse171589@fpt.edu.vn",
+  "password": "DevPass@1"
 }
 
 ### ========================================
@@ -18,23 +40,25 @@ Content-Type: application/json
 ### ========================================
 
 ### 1) Active registration period (from seed)
-GET {{host}}/api/registration-periods/active
+GET {{host}}/api/v1/registration-periods/active
 
-### 2) List all topics (seed includes Approved + Rejected case)
-GET {{host}}/api/topics
+### 2) List all topics (seed includes multiple statuses)
+GET {{host}}/api/v1/topics
 
 ### 3) Get approved seeded topic details
-GET {{host}}/api/topics/1001
+GET {{host}}/api/v1/topics/1001
 
-### 4) Get rejected seeded topic review summary
-GET {{host}}/api/topics/1002/review-summary
+### 4) Review summary — requires Lecturer or Admin JWT (not Student)
+GET {{host}}/api/v1/topics/1002/reviews/summary
+Authorization: Bearer {{token}}
 
 ### ========================================
 ### B. DEMO FLOW 1 - HAPPY PATH (APPROVE -> PUBLIC)
+### Use Admin JWT for assign/publish; Lecturer or Admin for reviews/summary
 ### ========================================
 
-### 5) Create topic (new pending topic)
-POST {{host}}/api/topics
+### 5) Create topic (Admin or Lecturer)
+POST {{host}}/api/v1/topics
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -48,8 +72,8 @@ Content-Type: application/json
   "creatorId": 1
 }
 
-### 6) Assign two reviewers for topic 1003
-POST {{host}}/api/topics/1003/assign-reviewers
+### 6) Assign two reviewers (Admin only) — REST: PUT .../reviewers
+PUT {{host}}/api/v1/topics/1003/reviewers
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -59,7 +83,7 @@ Content-Type: application/json
 }
 
 ### 7) Reviewer 1 approves
-POST {{host}}/api/topics/1003/reviews
+POST {{host}}/api/v1/topics/1003/reviews
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -70,7 +94,7 @@ Content-Type: application/json
 }
 
 ### 8) Reviewer 2 approves
-POST {{host}}/api/topics/1003/reviews
+POST {{host}}/api/v1/topics/1003/reviews
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -81,11 +105,11 @@ Content-Type: application/json
 }
 
 ### 9) Review summary (should be Approved)
-GET {{host}}/api/topics/1003/review-summary
+GET {{host}}/api/v1/topics/1003/reviews/summary
 Authorization: Bearer {{token}}
 
-### 10) Publish topic (should succeed)
-POST {{host}}/api/topics/1003/publish
+### 10) Publish topic (Admin only)
+POST {{host}}/api/v1/topics/1003/publication
 Authorization: Bearer {{token}}
 
 ### ========================================
@@ -93,7 +117,7 @@ Authorization: Bearer {{token}}
 ### ========================================
 
 ### 11) Create another topic
-POST {{host}}/api/topics
+POST {{host}}/api/v1/topics
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -107,8 +131,8 @@ Content-Type: application/json
   "creatorId": 4
 }
 
-### 12) Assign reviewers for topic 1004
-POST {{host}}/api/topics/1004/assign-reviewers
+### 12) Assign reviewers (Admin)
+PUT {{host}}/api/v1/topics/1004/reviewers
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -118,7 +142,7 @@ Content-Type: application/json
 }
 
 ### 13) Reviewer 1 rejects
-POST {{host}}/api/topics/1004/reviews
+POST {{host}}/api/v1/topics/1004/reviews
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -129,7 +153,7 @@ Content-Type: application/json
 }
 
 ### 14) Reviewer 2 approves
-POST {{host}}/api/topics/1004/reviews
+POST {{host}}/api/v1/topics/1004/reviews
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -140,19 +164,19 @@ Content-Type: application/json
 }
 
 ### 15) Summary (should be Rejected)
-GET {{host}}/api/topics/1004/review-summary
+GET {{host}}/api/v1/topics/1004/reviews/summary
 Authorization: Bearer {{token}}
 
 ### 16) Publish rejected topic (should fail)
-POST {{host}}/api/topics/1004/publish
+POST {{host}}/api/v1/topics/1004/publication
 Authorization: Bearer {{token}}
 
 ### ========================================
 ### D. AUXILIARY APIS
 ### ========================================
 
-### 17) Similarity check (TF-IDF + fuzzy) — was duplicate-check; now check-similarity
-POST {{host}}/api/topics/check-similarity
+### 17) Similarity check (Lecturer or Admin)
+POST {{host}}/api/v1/topics/similarity-checks
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -162,8 +186,8 @@ Content-Type: application/json
   "description": "Interactive VQA and RAG based learning system for bone diseases."
 }
 
-### 18) Create registration period
-POST {{host}}/api/registration-periods
+### 18) Create registration period (Admin only)
+POST {{host}}/api/v1/registration-periods
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

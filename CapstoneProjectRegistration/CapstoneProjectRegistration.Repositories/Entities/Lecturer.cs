@@ -27,6 +27,10 @@ public class Lecturer
     [StringLength(20)]
     public string Status { get; set; } = string.Empty;
 
+    public int? ApplicationUserId { get; set; }
+
+    public ApplicationUser? ApplicationUser { get; set; }
+
     public ICollection<Topic> Topics { get; set; } = new List<Topic>();
 
     public ICollection<TopicReview> TopicReviews { get; set; } = new List<TopicReview>();
