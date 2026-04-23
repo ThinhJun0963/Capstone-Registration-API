@@ -6,6 +6,16 @@
         public Logging Logging { get; set; }
         public string AllowedHosts { get; set; }
         public SecretToken SecretToken { get; set; }
+
+        public JwtSetting Jwt { get; set; } = new();
+    }
+
+    public class JwtSetting
+    {
+        public string SecretKey { get; set; } = string.Empty;
+        public string Issuer { get; set; } = string.Empty;
+        public string Audience { get; set; } = string.Empty;
+        public int AccessTokenLifetimeSeconds { get; set; }
     }
     public class ConnectionStrings
     {

@@ -34,8 +34,10 @@ public class TopicsController : ControllerBase
         return result.IsSuccess ? Ok(result) : BadRequest(result);
     }
 
+
+    [Authorize(Roles = "Lecturer")]
     [HttpGet]
-    [AllowAnonymous]
+    //[AllowAnonymous]
     public async Task<IActionResult> GetAll()
     {
         var response = await _topicService.GetAllTopicsAsync();

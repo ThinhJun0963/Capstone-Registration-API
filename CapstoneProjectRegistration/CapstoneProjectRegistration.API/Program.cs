@@ -1,5 +1,3 @@
-using System.Security.Claims;
-using System.Text;
 using CapstoneProjectRegistration.API.Infrastructure;
 using CapstoneProjectRegistration.API.Security;
 using CapstoneProjectRegistration.Repositories;
@@ -10,6 +8,7 @@ using CapstoneProjectRegistration.Repositories.Interfaces;
 using CapstoneProjectRegistration.Services.Implements;
 using CapstoneProjectRegistration.Services.Interface;
 using CapstoneProjectRegistration.Services.MyMapper;
+using CapstoneProjectRegistration.Services.Service.AccountService;
 using CapstoneProjectRegistration.Services.Service.RegistrationPeriods;
 using CapstoneProjectRegistration.Services.Service.Topicss;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -18,6 +17,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Security.Claims;
+using System.Text;
 
 namespace CapstoneProjectRegistration.API;
 
@@ -27,7 +28,7 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        var configuration = builder.Configuration.Get<AppSetting>();
+        //var configuration = builder.Configuration.Get<AppSetting>();
 
         builder.Services.AddDbContext<CapstoneDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -111,7 +112,7 @@ public class Program
         builder.Services.AddAutoMapper(
             cfg => { cfg.LicenseKey = autoMapperLicense; },
             typeof(MapperConfigurationsProfile));
-        builder.Services.AddSingleton(configuration!);
+        //builder.Services.AddSingleton(configuration!);
         builder.Configuration.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
 
         builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -121,6 +122,11 @@ public class Program
         builder.Services.AddScoped<IRegistrationPeriodService, RegistrationPeriodService>();
         builder.Services.AddScoped<ITopicImportService, TopicImportService>();
         builder.Services.AddScoped<ITopicSimilarityService, TopicSimilarityService>();
+
+
+        builder.Services.AddScoped<IAuthService, AuthService>();
+        builder.Services.Configure<AppSetting>(builder.Configuration);
+
 
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
