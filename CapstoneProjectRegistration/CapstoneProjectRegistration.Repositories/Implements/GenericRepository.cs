@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using CapstoneProjectRegistration.Repositories.Data;
 using CapstoneProjectRegistration.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -15,14 +16,14 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         _context = context;
         _db = _context.Set<T>();
     }
-    public async Task<T> GetAsync(System.Linq.Expressions.Expression<Func<T, bool>> filter)
+    public async Task<T> GetAsync(Expression<Func<T, bool>> filter)
     {
 
         IQueryable<T> query = _db;
         return await query.FirstOrDefaultAsync(filter);
 
     }
-    public async Task<T> GetAsync(System.Linq.Expressions.Expression<Func<T, bool>> filter, Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null)
+    public async Task<T> GetAsync(Expression<Func<T, bool>> filter, Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null)
     {
 
         IQueryable<T> query = _db;
@@ -49,13 +50,20 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         return await _context.Set<T>().AsNoTracking().ToListAsync();
     }
-    public async Task<List<T>> GetAllAsync(System.Linq.Expressions.Expression<Func<T, bool>>? filter)
+    public async Task<List<T>> GetAllAsync(Expression<Func<T, bool>>? filter)
     {
         if (filter != null)
         {
             return await _db.Where(filter).ToListAsync();
         }
         return await _db.ToListAsync();
+    }
+
+    public async Task<List<T>> GetAllWithIncludeAsync(Func<IQueryable<T>, IIncludableQueryable<T, object>> include)
+    {
+        IQueryable<T> query = _db;
+        query = include(query);
+        return await query.AsNoTracking().ToListAsync();
     }
 
     public async Task<T?> GetByIdAsync(int id)

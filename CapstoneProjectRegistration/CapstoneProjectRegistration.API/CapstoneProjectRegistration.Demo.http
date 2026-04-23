@@ -1,4 +1,17 @@
 @host = https://localhost:7259
+@token = <paste_jwt_from_login_response>
+
+### ========================================
+### 0) Login (demo: admin@fpt.edu.vn / Admin@123) — use token in Authorization for protected routes
+### ========================================
+
+POST {{host}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@fpt.edu.vn",
+  "password": "Admin@123"
+}
 
 ### ========================================
 ### A. QUICK CHECK SEEDED DATA
@@ -22,6 +35,7 @@ GET {{host}}/api/topics/1002/review-summary
 
 ### 5) Create topic (new pending topic)
 POST {{host}}/api/topics
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -36,6 +50,7 @@ Content-Type: application/json
 
 ### 6) Assign two reviewers for topic 1003
 POST {{host}}/api/topics/1003/assign-reviewers
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -45,6 +60,7 @@ Content-Type: application/json
 
 ### 7) Reviewer 1 approves
 POST {{host}}/api/topics/1003/reviews
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -55,6 +71,7 @@ Content-Type: application/json
 
 ### 8) Reviewer 2 approves
 POST {{host}}/api/topics/1003/reviews
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -65,9 +82,11 @@ Content-Type: application/json
 
 ### 9) Review summary (should be Approved)
 GET {{host}}/api/topics/1003/review-summary
+Authorization: Bearer {{token}}
 
 ### 10) Publish topic (should succeed)
 POST {{host}}/api/topics/1003/publish
+Authorization: Bearer {{token}}
 
 ### ========================================
 ### C. DEMO FLOW 2 - REJECT PATH
@@ -75,6 +94,7 @@ POST {{host}}/api/topics/1003/publish
 
 ### 11) Create another topic
 POST {{host}}/api/topics
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -89,6 +109,7 @@ Content-Type: application/json
 
 ### 12) Assign reviewers for topic 1004
 POST {{host}}/api/topics/1004/assign-reviewers
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -98,6 +119,7 @@ Content-Type: application/json
 
 ### 13) Reviewer 1 rejects
 POST {{host}}/api/topics/1004/reviews
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -108,6 +130,7 @@ Content-Type: application/json
 
 ### 14) Reviewer 2 approves
 POST {{host}}/api/topics/1004/reviews
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -118,16 +141,19 @@ Content-Type: application/json
 
 ### 15) Summary (should be Rejected)
 GET {{host}}/api/topics/1004/review-summary
+Authorization: Bearer {{token}}
 
 ### 16) Publish rejected topic (should fail)
 POST {{host}}/api/topics/1004/publish
+Authorization: Bearer {{token}}
 
 ### ========================================
 ### D. AUXILIARY APIS
 ### ========================================
 
-### 17) Duplicate check
-POST {{host}}/api/topics/duplicate-check
+### 17) Similarity check (TF-IDF + fuzzy) — was duplicate-check; now check-similarity
+POST {{host}}/api/topics/check-similarity
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -138,6 +164,7 @@ Content-Type: application/json
 
 ### 18) Create registration period
 POST {{host}}/api/registration-periods
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {

@@ -1,5 +1,6 @@
 using CapstoneProjectRegistration.Services.Interface;
 using CapstoneProjectRegistration.Services.Request.RegistrationPeriod;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CapstoneProjectRegistration.API.Controllers;
@@ -16,6 +17,7 @@ public class RegistrationPeriodsController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize]
     public async Task<IActionResult> Create([FromBody] CreateRegistrationPeriodRequest request)
     {
         var response = await _registrationPeriodService.CreateAsync(request);
@@ -23,6 +25,7 @@ public class RegistrationPeriodsController : ControllerBase
     }
 
     [HttpGet("active")]
+    [AllowAnonymous]
     public async Task<IActionResult> GetActive()
     {
         var response = await _registrationPeriodService.GetActiveAsync();

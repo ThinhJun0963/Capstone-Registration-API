@@ -1,5 +1,7 @@
+using CapstoneProjectRegistration.Services.DTOs.Topic;
 using CapstoneProjectRegistration.Services.Interface;
 using CapstoneProjectRegistration.Services.Request.Topic;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CapstoneProjectRegistration.API.Controllers
@@ -8,13 +10,22 @@ namespace CapstoneProjectRegistration.API.Controllers
     [Route("api/topics")]
     public class TopicController : ControllerBase
     {
-        public ITopicService _topicService;
-        public TopicController(ITopicService topicService)
+        private readonly ITopicService _topicService;
+        private readonly ITopicImportService _topicImportService;
+        private readonly ITopicSimilarityService _topicSimilarityService;
+
+        public TopicController(
+            ITopicService topicService,
+            ITopicImportService topicImportService,
+            ITopicSimilarityService topicSimilarityService)
         {
             _topicService = topicService;
+            _topicImportService = topicImportService;
+            _topicSimilarityService = topicSimilarityService;
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> CreateTopic([FromBody] TopicCreateRequest request)
         {
             var result = await _topicService.CreateTopicAsync(request);
@@ -22,6 +33,7 @@ namespace CapstoneProjectRegistration.API.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAllTopic()
         {
             var response = await _topicService.GetAllTopicsAsync();
@@ -29,6 +41,7 @@ namespace CapstoneProjectRegistration.API.Controllers
         }
 
         [HttpGet("{id:int}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetById(int id)
         {
             var response = await _topicService.GetTopicByIdAsync(id);
@@ -36,6 +49,7 @@ namespace CapstoneProjectRegistration.API.Controllers
         }
 
         [HttpDelete("{id:int}")]
+        [Authorize]
         public async Task<IActionResult> DeleteTopicDetail(int id)
         {
             var response = await _topicService.DeleteTopicAsync(id);
@@ -43,53 +57,88 @@ namespace CapstoneProjectRegistration.API.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> UpdateTopicData(int id, TopicUpdateRequest topicUpdateRequest)
+        [Authorize]
+        public async Task<IActionResult> UpdateTopicData(int id, [FromBody] TopicUpdateRequest topicUpdateRequest)
         {
-            var resposne = await _topicService.UpdateTopicAsync(id, topicUpdateRequest);
-            return resposne.IsSuccess ? Ok(resposne) : BadRequest(resposne);
+            var response = await _topicService.UpdateTopicAsync(id, topicUpdateRequest);
+            return response.IsSuccess ? Ok(response) : BadRequest(response);
         }
 
         [HttpPost("{id:int}/assign-reviewers")]
+        [Authorize]
         public async Task<IActionResult> AssignReviewers(int id, [FromBody] AssignReviewersRequest request)
         {
-            var response = await _topicService.AssignReviewersAsync(id, request);
-            return response.IsSuccess ? Ok(response) : BadRequest(response);
+            var result = await _topicService.AssignReviewersAsync(id, request);
+            return result.IsSuccess ? Ok(result) : BadRequest(result);
         }
 
         [HttpPost("{id:int}/reviews")]
+        [Authorize]
         public async Task<IActionResult> SubmitReview(int id, [FromBody] SubmitTopicReviewRequest request)
         {
-            var response = await _topicService.SubmitReviewAsync(id, request);
-            return response.IsSuccess ? Ok(response) : BadRequest(response);
+            var result = await _topicService.SubmitReviewAsync(id, request);
+            return result.IsSuccess ? Ok(result) : BadRequest(result);
         }
 
         [HttpGet("{id:int}/review-summary")]
+        [Authorize]
         public async Task<IActionResult> ReviewSummary(int id)
         {
-            var response = await _topicService.GetReviewSummaryAsync(id);
-            return response.IsSuccess ? Ok(response) : NotFound(response);
+            var result = await _topicService.GetReviewSummaryAsync(id);
+            return result.IsSuccess ? Ok(result) : NotFound(result);
         }
 
         [HttpPost("{id:int}/publish")]
+        [Authorize]
         public async Task<IActionResult> Publish(int id)
         {
-            var response = await _topicService.PublishTopicAsync(id);
-            return response.IsSuccess ? Ok(response) : BadRequest(response);
-        }
-
-        [HttpPost("duplicate-check")]
-        public async Task<IActionResult> DuplicateCheck([FromBody] TopicDuplicateCheckRequest request)
-        {
-            var response = await _topicService.CheckDuplicateAsync(request);
-            return response.IsSuccess ? Ok(response) : BadRequest(response);
+            var result = await _topicService.PublishTopicAsync(id);
+            return result.IsSuccess ? Ok(result) : BadRequest(result);
         }
 
         [HttpPost("extract-from-file")]
         [Consumes("multipart/form-data")]
+        [Authorize]
         public async Task<IActionResult> ExtractFromFile([FromForm] ExtractTopicFromFileRequest request)
         {
-            var response = await _topicService.ExtractTopicFromFileAsync(request.File);
-            return response.IsSuccess ? Ok(response) : BadRequest(response);
+            var result = await _topicService.ExtractTopicFromFileAsync(request.File);
+            return result.IsSuccess ? Ok(result) : BadRequest(result);
+        }
+
+        /// <summary>
+        /// Import topic fields from a .docx file using Word-to-Markdown conversion and pattern extraction.
+        /// </summary>
+        [HttpPost("import-word")]
+        [Consumes("multipart/form-data")]
+        [Authorize]
+        public async Task<IActionResult> ImportWord([FromForm] ImportWordRequest request)
+        {
+            var file = request?.File;
+            if (file == null || file.Length == 0)
+            {
+                return BadRequest("File is required.");
+            }
+
+            var extension = Path.GetExtension(file.FileName).ToLowerInvariant();
+            if (extension != ".docx")
+            {
+                return BadRequest("Only .docx files are supported.");
+            }
+
+            await using var stream = file.OpenReadStream();
+            var result = await _topicImportService.ImportFromWordAsync(stream);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Advanced duplicate / similarity check (TF-IDF + fuzzy name match). Returns the top 5 similar topics.
+        /// </summary>
+        [HttpPost("check-similarity")]
+        [Authorize]
+        public async Task<IActionResult> CheckSimilarity([FromBody] DuplicateCheckRequestDto request)
+        {
+            var result = await _topicSimilarityService.CheckDuplicateAsync(request);
+            return Ok(result);
         }
     }
 }
