@@ -37,7 +37,7 @@ public class TopicsController : ControllerBase
 
     [Authorize(Roles = "Lecturer")]
     [HttpGet]
-    //[AllowAnonymous]
+    [AllowAnonymous]
     public async Task<IActionResult> GetAll()
     {
         var response = await _topicService.GetAllTopicsAsync();
