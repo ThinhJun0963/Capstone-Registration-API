@@ -67,6 +67,10 @@ namespace CapstoneProjectRegistration.API
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
+            // Lecture repository and service
+            builder.Services.AddScoped<CapstoneProjectRegistration.Repositories.Interfaces.ILectureRepository, CapstoneProjectRegistration.Repositories.Implements.LectureRepository>();
+            builder.Services.AddScoped<CapstoneProjectRegistration.Services.Interface.ILectureService, CapstoneProjectRegistration.Services.Implements.LectureService>();
+
             builder.Services.AddScoped<ITopicService, TopicService>();
             builder.Services.AddScoped<IRegistrationPeriodService, RegistrationPeriodService>();
             builder.Services.AddScoped<ITopicImportService, TopicImportService>();

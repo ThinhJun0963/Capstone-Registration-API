@@ -18,6 +18,10 @@ public class MapperConfigurationsProfile : Profile
         CreateMap<Topic, TopicRespond>();
         CreateMap<TopicUpdateRequest, Topic>();
 
+        // Lecturer mappings
+        CreateMap<CapstoneProjectRegistration.Services.Request.Lecturer.LecturerCreateRequest, CapstoneProjectRegistration.Repositories.Entities.Lecturer>();
+        CreateMap<CapstoneProjectRegistration.Repositories.Entities.Lecturer, CapstoneProjectRegistration.Services.Request.Lecturer.LecturerCreateRequest>();
+
         CreateMap<CreateRegistrationPeriodRequest, RegistrationPeriod>()
             .ForMember(dest => dest.Status, opt => opt.MapFrom(_ => "Active"));
         CreateMap<RegistrationPeriod, RegistrationPeriodRespond>();
